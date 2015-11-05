@@ -20,13 +20,20 @@
   (cdr pair))
 
 (define (add-frac frac1 frac2)
-  (cons (+(* (fst frac1) (snd frac2)) (* (fst frac2) (snd frac1)))  (* (snd frac1) (snd frac2))))
+  (cond[(equal? 0 (* (snd frac1) (snd frac2))) "losho"]
+       [(equal? 0 (+(* (fst frac1) (snd frac2)) (* (fst frac2) (snd frac1)))) (cons 0 0)]
+  [else (cons (+(* (fst frac1) (snd frac2)) (* (fst frac2) (snd frac1)))  (* (snd frac1) (snd frac2)))]
+  ))
 
 (define (substract-frac frac1 frac2)
-  (cons (-(* (fst frac1) (snd frac2)) (* (fst frac2) (snd frac1)))  (* (snd frac1) (snd frac2))))
+  (cond[(equal? 0 (* (snd frac1) (snd frac2))) "losho"]
+       [(equal? 0 (-(* (fst frac1) (snd frac2)) (* (fst frac2) (snd frac1)))) (cons 0 0)]
+  [else (cons (-(* (fst frac1) (snd frac2)) (* (fst frac2) (snd frac1)))  (* (snd frac1) (snd frac2)))]))
 
 (define (mult-frac frac1 frac2)
-  (cons (* (fst frac1) (fst frac2)) (*(snd frac1) (snd frac2))))
+  (cond[(equal? 0 (*(snd frac1) (snd frac2))) "losho"]  
+       [(equal? 0 (* (fst frac1) (fst frac2))) (cons 0 0)]
+      [else (cons (* (fst frac1) (fst frac2)) (*(snd frac1) (snd frac2)))]))
 
 (define (simplify-frac frac)
   (define (helper n)
