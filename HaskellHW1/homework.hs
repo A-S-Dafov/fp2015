@@ -1,30 +1,63 @@
-listToNumber :: [Int] -> Int
-listToNumber [] = 0
-listToNumber (x:xs) = x * (10 ^ length xs) + listToNumber xs
+isPrime :: Int -> Bool
+isPrime x
+    | x <= 1 = False
+    | otherwise = helper 2 x
+        where
+            helper current n
+                | current == n = True
+                | mod n current == 0 = False
+                | otherwise = helper (current + 1) n
 
-suffix :: (Eq a) => [a] -> [a] -> Bool
-suffix (x : xs) (y : ys)
-    | length (x : xs) > length (y : ys) = False
-    | (x : xs) == [] = [] == (y : ys)
-    | length (x : xs) == length (y : ys ) = (x : xs) == (y : ys)
-    | otherwise = suffix (x : xs) ys
+truncatablePrime :: Int -> Bool
+truncatablePrime x
+    | (x>1) && (x<10) && (isPrime x) = True
+    | isPrime x == False = False
+    | otherwise = truncatablePrime (div x 10)
 
-isDigit x = (x >= 0 ) && (x <= 9)
+digitIn :: Int -> Int -> Bool
+digitIn x y
+    | x == 0 && y == 0 = True
+    | otherwise = helper x y
+        where
+            helper x y
+                | x == 0 = False
+                | mod x 10  == y = True
+                |otherwise = helper (div x 10) y
 
-timesInList :: Int -> [Int] -> Int
-timesInList _ [] = 0
-timesInList x (y : ys)
-    | x == y = 1 + timesInList x ys
-    |otherwise = timesInList x ys
+containsDigits :: Int -> Int -> Bool
+containsDigits x y 
+    | y == 0 = digitIn x y
+    | otherwise = helper x y
+        where
+            helper x y
+                | y == 0 = True
+                | digitIn x (mod y 10) == False = False
+                | otherwise = helper x (div y 10)
 
-occurrences :: [Int] -> [Int] -> [Int]
-occurrences [] _ = []
-occurrences _ [] = []
-occurrences (x : xs) (y : ys) = timesInList x (y : ys) : occurrences xs (y : ys)
+productOfDigits :: Int -> Int
+productOfDigits x
+    | x == 0 = 0
+    |otherwise = helper x
+        where
+            helper x
+                | x == 0 = 1
+                | otherwise = (mod x 10) * helper (div x 10)
 
-removeAt :: Int -> [a] -> [a]
-removeAt _ [] = error "Empty"
-removeAt x (y:ys)
-    | x < 0 || x >= length (y : ys) = error "Indes Out of bounds"
-    | x == 0 = ys
-    | otherwise = y : removeAt (x - 1) ys
+sumDel :: Int -> Int
+sumDel x = helper x 1
+    where
+        helper x number
+            | number == x = 0
+            | mod x number == 0 = number + helper x (number + 1)
+            | otherwise = helper x (number + 1)
+
+interestingNumber :: Int -> Bool
+interestingNumber x = x == sumDel (sumDel x)
+
+quadrant :: Double -> Double -> Int
+quadrant x y
+    | x == 0 && y == 0 = 0
+    | x <= 0 && y <= 0 = 3
+    | x <= 0 && y >= 0 = 2
+    | x >= 0 && y >= 0 = 1
+    | x >= 0 && y <= 0 = 4
