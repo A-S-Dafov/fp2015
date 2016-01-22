@@ -86,3 +86,9 @@
     [(= x (root tree)) #t]
     [(< x (root tree)) (bst-element? x (left tree))]
     [(> x (root tree)) (bst-element? x (right tree))]))
+    
+    (define (bst? tree)
+  (cond
+    [(is-leaf? tree) #t]
+    [(or (< (root tree) (root (left tree))) (> (root tree) (root (right tree)))) #f]
+    [else (and (bst? (left tree)) (bst? (right tree)))]))
