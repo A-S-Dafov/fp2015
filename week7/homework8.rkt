@@ -92,3 +92,9 @@
     [(is-leaf? tree) #t]
     [(or (< (root tree) (root (left tree))) (> (root tree) (root (right tree)))) #f]
     [else (and (bst? (left tree)) (bst? (right tree)))]))
+    
+    (define (bst->list tree)
+  (cond
+    [(empty-tree? tree) '()]
+    [(is-leaf? tree) (list (root tree))]
+    [else (append (bst->list (left tree)) (list (root tree)) (bst->list (right tree)))]))
